@@ -14,7 +14,7 @@ S&P 500 - https://www.kaggle.com/datasets/arashnic/time-series-forecasting-with-
 ### Tools
 
 - MySQL - Data cleaning and analysis
-- Tableau - Data visualization
+- Tableau - Data visualization and analysis
 
 
 ### Data Cleaning
@@ -31,29 +31,55 @@ In the initial data preparation phase, I performed the following in SQL:
 
 ### Data Analysis
 
-Involved exploring the layoffs data to answer key questions, such as:
+Involved exploring the company data to answer key questions, such as:
 
-- What companies contributed the most to that layoff count and how much did they layoff?
-- What are the countries and cities with the most layoffs?
-- Which industries had the most layoffs?
-- Which month had the most layoffs?
+- What are the overall trends in stock prices for NVIDIA, AMD, and Intel over the given period?
+- Which company has shown the most volatility, and how does it compare to its competitors?
+- What is the volatility pattern for each company's stock? Are there periods of high or low volatility?
+- What are the trends in trading volume for each company?
+- Based on historical data, which company appears to be the most resilient during market downturns?
+
+Data Quality Considerations:
+
+- Are there any data inconsistencies or outliers that need further investigation?
+- How does the quality of the data impact the conclusions that can be drawn from this analysis?
 
 Some interesting code I worked with:
 
-Found the sum of each company's total layoffs in descending order by layoffs
+Compared the average closing prices of NVIDIA to AMD and Intel over monthly periods
 
 ```sql
-WITH Rolling_Total AS
-(
-SELECT SUBSTRING(`date`, 1, 7) AS `MONTH`, SUM(total_laid_off) AS total_off
-FROM layoffs_staging2
-WHERE SUBSTRING(`date`, 1, 7) IS NOT NULL
-GROUP BY `MONTH`
-ORDER BY 1 ASC
-)
-SELECT `MONTH`, total_off,
-SUM(total_off) OVER(ORDER BY `MONTH`) AS rolling_total
-FROM Rolling_Total;
+SELECT nv.Year, 
+       nv.Month,
+       nv.Avg_Nvidia_Close,
+       amd.Avg_AMD_Close,
+       intel.Avg_Intel_Close,
+       (nv.Avg_Nvidia_Close - amd.Avg_AMD_Close) AS Nvidia_vs_AMD_Price_Difference,
+       (nv.Avg_Nvidia_Close - intel.Avg_Intel_Close) AS Nvidia_vs_Intel_Price_Difference
+FROM (
+    SELECT YEAR(`Date`) AS Year, 
+           MONTH(`Date`) AS Month,
+           AVG(`Close`) AS Avg_Nvidia_Close
+    FROM nvidia_staging
+    GROUP BY Year, Month
+) nv
+JOIN (
+    SELECT YEAR(`Date`) AS Year, 
+           MONTH(`Date`) AS Month,
+           AVG(`Close`) AS Avg_AMD_Close
+    FROM amdintel_staging
+    WHERE Company = 'AMD'
+    GROUP BY Year, Month
+) amd ON nv.Year = amd.Year AND nv.Month = amd.Month
+JOIN (
+    SELECT YEAR(`Date`) AS Year, 
+           MONTH(`Date`) AS Month,
+           AVG(`Close`) AS Avg_Intel_Close
+    FROM amdintel_staging
+    WHERE Company = 'Intel'
+    GROUP BY Year, Month
+) intel ON nv.Year = intel.Year AND nv.Month = intel.Month
+ORDER BY nv.Year, nv.Month;
 ```
 
 ### Results/ Findings
