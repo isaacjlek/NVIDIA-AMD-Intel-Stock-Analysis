@@ -84,13 +84,12 @@ ORDER BY nv.Year, nv.Month;
 
 ### Results/ Findings
 
-SQL - https://shorturl.at/apPWl
+SQL Code - https://github.com/isaacjlek/NVIDIA-AMD-Intel-Stock-Analysis/blob/main/NVIDIA-AMD-Intel-Stock.sql
 
-Tableau Dashboards - 
+Tableau Dashboard Preview: 
 
-![Screenshot 2024-07-15 231126](https://github.com/user-attachments/assets/106da0fb-5984-49c5-860d-1d08ec0c8b97)
-Interactive Dashboard 1: https://public.tableau.com/app/profile/isaac.leksrisawat/viz/layoffs_dashboard1/Dashboard1
+![Screenshot 2024-08-29 001421](https://github.com/user-attachments/assets/97bceb7d-8a5b-45f0-8ba3-f27b834c8b8c)
+![Screenshot 2024-08-29 001730](https://github.com/user-attachments/assets/71cd9070-9190-41df-9de6-3bd23624aceb)
 
-![Screenshot 2024-07-15 231340](https://github.com/user-attachments/assets/b66ed4f7-0957-4acd-801c-dec23178aaa9)
-Interactive Dashboard 2: https://public.tableau.com/app/profile/isaac.leksrisawat/viz/layoffs_dashboard2/Dashboard2
-&nbsp;
+Interactive Dashboard Directory: https://public.tableau.com/app/profile/isaac.leksrisawat/viz/NVIDIAAMDIntelStockAnalysis/NVIDIADashboard#1
+
